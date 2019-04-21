@@ -1,0 +1,7 @@
+homeassistant:
+  name: FireKatt
+  elevation: 107
+  unit_system: metric
+  time_zone: America/Los_Angeles
+  
+  
