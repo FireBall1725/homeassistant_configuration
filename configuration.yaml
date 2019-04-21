@@ -1,7 +1,14 @@
 homeassistant:
   name: FireKatt
-  elevation: 107
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
   unit_system: metric
   time_zone: America/Los_Angeles
-  
-  
+  packages: !include_dir_named packages
+
+# Enables the frontend
+http:
+
+# Enables default home assistant components
+default_config:
