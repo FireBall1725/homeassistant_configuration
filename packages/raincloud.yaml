@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
-#  @package      :  Secrets
-#  @description  :  Home assistant secrets file
+#  @date         :  23/06/2019
+#  @package      :  Raincloud
+#  @description  :  Automations and settings for the raincloud devices
 ################################################################################
 
 # Copyright 2019 Erin Reed / FireBall1725
@@ -25,30 +25,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 
-#  Secrets  ####################################################################
-# Home information
-home_latitude: 0
-home_longitude: 0
-home_elevation: 0
+#  Raincloud Bridge  ###########################################################
+raincloud:
+  username: !secret raincloud_username
+  password: !secret raincloud_password
 
-# Abode
-abode_username: 
-abode_password: 
+#  Binary Sensors  #############################################################
+binary_sensor:
+  - platform: raincloud
 
-# Nest
-nest_client_id: 
-nest_client_secret: 
+#  Switches  ###################################################################
+switch:
+  - platform: raincloud
 
-# MyQ
-myq_username: 
-myq_password: 
-
-# Raincloud
-raincloud_username: 
-raincloud_password: 
-
-# UniFi
-unifi_username: 
-unifi_password: 
+#  Sensors  ####################################################################
+sensor:
+  - platform: raincloud
 
 ################################################################################
+#  ToDo List:
+#    - Disable Raincloud devices if there is rain

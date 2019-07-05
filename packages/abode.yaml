@@ -1,0 +1,79 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  23/06/2019
+#  @package      :  Abode
+#  @description  :  Automations and settings for the home alarm system
+################################################################################
+
+# Copyright 2019 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy 
+# of this software and associated documentation files (the "Software"), to deal 
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is 
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# SOFTWARE.
+
+#  Abode Alarm  ################################################################
+abode:
+  username: !secret abode_username
+  password: !secret abode_password
+
+#  Automations  ################################################################
+automation:
+  - alias: alarm_arm_away
+    trigger:
+      platform: state
+      entity_id: group.all_devices
+      from: 'home'
+      to: 'not_home'
+      for:
+        minutes: 5
+    action:
+      service: alarm_control_panel.alarm_arm_away
+
+  - alias: alarm_disarm_home
+    trigger:
+      platform: state
+      entity_id: group.all_devices
+      from: 'not_home'
+      to: 'home'
+    condition:
+      condition: state
+      entity_id: alarm_control_panel.abode_alarm
+      state: 'armed_away'
+    action:
+      service: alarm_control_panel.alarm_disarm
+
+#  Customize Entities  #########################################################
+homeassistant:
+  customize:
+    automation.alarm_arm_away:
+      icon: mdi:shield-lock-outline
+    
+    automation.alarm_disarm_home:
+      icon: mdi:shield-off-outline
+
+#  Groups  #####################################################################
+group:
+  alarm_automations:
+    name: Alarm Automations
+    control: hidden
+    entities:
+      - automation.alarm_arm_away
+      - automation.alarm_disarm_home
+
+################################################################################
+#  ToDo List:
+#    - Add alarm arm home at night when everyone is asleep

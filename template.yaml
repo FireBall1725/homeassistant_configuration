@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
-#  @package      :  Secrets
-#  @description  :  Home assistant secrets file
+#  @date         :  dd/mm/2019
+#  @package      :  Cloud
+#  @description  :  
 ################################################################################
 
 # Copyright 2019 Erin Reed / FireBall1725
@@ -25,30 +25,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 
-#  Secrets  ####################################################################
-# Home information
-home_latitude: 0
-home_longitude: 0
-home_elevation: 0
+#  Sensors  ####################################################################
 
-# Abode
-abode_username: 
-abode_password: 
+#  Plants  #####################################################################
 
-# Nest
-nest_client_id: 
-nest_client_secret: 
+#  Automations  ################################################################
 
-# MyQ
-myq_username: 
-myq_password: 
+#  Groups  #####################################################################
 
-# Raincloud
-raincloud_username: 
-raincloud_password: 
+#  Lights  #####################################################################
 
-# UniFi
-unifi_username: 
-unifi_password: 
+#  Covers  #####################################################################
+
+#  Switches  ###################################################################
+
+#  Binary Sensors  #############################################################
+
+#  Customize Entities  #########################################################
 
 ################################################################################
+#  ToDo List:
+#    - List Item

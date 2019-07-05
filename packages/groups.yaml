@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
-#  @package      :  Secrets
-#  @description  :  Home assistant secrets file
+#  @date         :  01/07/2019
+#  @package      :  Groups
+#  @description  :  Generic groups for home assistant
 ################################################################################
 
 # Copyright 2019 Erin Reed / FireBall1725
@@ -25,30 +25,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 
-#  Secrets  ####################################################################
-# Home information
-home_latitude: 0
-home_longitude: 0
-home_elevation: 0
+#  Groups  #####################################################################
+group:
+  all_doors:
+    name: all doors
+    entities:
+      - binary_sensor.front_door
+      - binary_sensor.garage_door
+      - binary_sensor.garage_side_door
+      - binary_sensor.living_room_door
+      - binary_sensor.side_door
+  
+  all_windows:
+    name: all windows
+    entities:
+      - binary_sensor.living_room_left
+      - binary_sensor.living_room_right
+      - binary_sensor.james_room_left
+      - binary_sensor.james_room_right
 
-# Abode
-abode_username: 
-abode_password: 
+  fan_doors:
+    name: fan doors
+    entities:
+      - binary_sensor.living_room_door
+      - binary_sensor.side_door
 
-# Nest
-nest_client_id: 
-nest_client_secret: 
-
-# MyQ
-myq_username: 
-myq_password: 
-
-# Raincloud
-raincloud_username: 
-raincloud_password: 
-
-# UniFi
-unifi_username: 
-unifi_password: 
+  fan_windows:
+    name: fan windows
+    entities:
+      - binary_sensor.living_room_left
+      - binary_sensor.living_room_right
+      - binary_sensor.james_room_left
+      - binary_sensor.james_room_right
 
 ################################################################################

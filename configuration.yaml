@@ -1,14 +1,97 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  01/05/2019
+#  @package      :  Configuration
+#  @description  :  Home assistant main configuration file
+################################################################################
+
+# Copyright 2019 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy 
+# of this software and associated documentation files (the "Software"), to deal 
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is 
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# SOFTWARE.
+
+#  Home Assistant Settings  ####################################################
 homeassistant:
-  name: FireKatt
+  name: FireKatt 2
   latitude: !secret home_latitude
   longitude: !secret home_longitude
   elevation: !secret home_elevation
   unit_system: metric
-  time_zone: America/Los_Angeles
+  time_zone: America/Vancouver
+ # customize: !include customize.yaml
   packages: !include_dir_named packages
 
-# Enables the frontend
+#  Discovery  ##################################################################
+discovery:
+  ignore:
+    - apple_tv
+    - samsung_tv
+
+#  Default Configuration  ######################################################
+default_config:
+
+#  HTTP Endpoint  ##############################################################
 http:
 
-# Enables default home assistant components
-default_config:
+#  Sensors  ####################################################################
+sensor:
+  - platform: yr
+#  - platform: openevse
+#    host: 10.0.1.6
+#    monitored_variables:
+#      - status
+#      - charge_time
+#      - rtc_temp
+#      - ir_temp
+#      - ambient_temp
+#      - usage_session
+#      - usage_total
+
+#  Lovelace UI  ################################################################
+lovelace:
+  mode: yaml
+
+#  Text to speech  #############################################################
+tts:
+  - platform: google_translate
+
+#  Switches  ###################################################################
+switch:
+  - platform: flux
+    lights:
+      - light.group_livingroom_light
+    name: Flux Livingroom Light
+    mode: mired
+    transition: 5
+    interval: 180
+    start_colortemp: 6000
+    sunset_colortemp: 4000
+
+#  Lights  #####################################################################
+light:
+  - platform: group
+    name: Group Livingroom Light
+    entities:
+      - light.lightify_livingroom_light_1
+      - light.lightify_livingroom_light_2
+      - light.lightify_livingroom_light_3
+      - light.lightify_livingroom_light_4
+
+################################################################################
+#  ToDo List:
+#    - Cleanup configuration, move items to packages folder

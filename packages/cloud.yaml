@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
-#  @package      :  Secrets
-#  @description  :  Home assistant secrets file
+#  @date         :  23/06/2019
+#  @package      :  Cloud
+#  @description  :  Settings for the Google Home and Apple Homekit integrations
 ################################################################################
 
 # Copyright 2019 Erin Reed / FireBall1725
@@ -25,30 +25,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 
-#  Secrets  ####################################################################
-# Home information
-home_latitude: 0
-home_longitude: 0
-home_elevation: 0
+#  Cloud Settings  #############################################################
+cloud:
+  google_actions:
+    filter:
+      include_entities:
+        - light.group_livingroom_light
+        - light.group_room1_light
+        - light.group_room4_light
+        - switch.vera_house_fan
+        - switch.vera_room4_tardis
+    entity_config:
+      light.group_livingroom_light:
+        name: Living Room
+        room: Living Room
+      light.group_room1_light:
+        name: Lights
+        room: Erin's Room
+      light.group_room4_light:
+        name: Lights
+        room: James' Room
+      switch.vera_house_fan:
+        name: House Fan
+        room: Global
+      switch.vera_room4_tardis:
+        name: Tardis Lights
 
-# Abode
-abode_username: 
-abode_password: 
-
-# Nest
-nest_client_id: 
-nest_client_secret: 
-
-# MyQ
-myq_username: 
-myq_password: 
-
-# Raincloud
-raincloud_username: 
-raincloud_password: 
-
-# UniFi
-unifi_username: 
-unifi_password: 
+#  Apple Homekit Settings  #####################################################
+homekit:
+  filter:
+    include_entities:
+      - light.group_livingroom_light
+  entity_config:
+    light.group_livingroom_light:
+      name: Living Room Lights
 
 ################################################################################

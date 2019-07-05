@@ -1,0 +1,523 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  04/07/2019
+#  @package      :  Plants
+#  @description  :  Automations and settings for all the house plants
+################################################################################
+
+# Copyright 2019 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy 
+# of this software and associated documentation files (the "Software"), to deal 
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is 
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# SOFTWARE.
+
+#  Sensors  ####################################################################
+sensor:
+  # Parsley (Garlic Bread)
+  - platform: mqtt
+    state_topic: "miflora/Parsley"
+    name: MQTT Parsley Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Parsley"
+    name: MQTT Parsley Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Parsley"
+    name: MQTT Parsley Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Parsley"
+    name: MQTT Parsley Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Parsley"
+    name: MQTT Parsley Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Calibrachoa (Callie)
+  - platform: mqtt
+    state_topic: "miflora/Calibrachoa"
+    name: MQTT Calibrachoa Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Calibrachoa"
+    name: MQTT Calibrachoa Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Calibrachoa"
+    name: MQTT Calibrachoa Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Calibrachoa"
+    name: MQTT Calibrachoa Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Calibrachoa"
+    name: MQTT Calibrachoa Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Marigold (Rumpelstiltskin)
+  - platform: mqtt
+    state_topic: "miflora/Marigold"
+    name: MQTT Marigold Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Marigold"
+    name: MQTT Marigold Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Marigold"
+    name: MQTT Marigold Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Marigold"
+    name: MQTT Marigold Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Marigold"
+    name: MQTT Marigold Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Mint (Minty Python)
+  - platform: mqtt
+    state_topic: "miflora/Mint"
+    name: MQTT Mint Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Mint"
+    name: MQTT Mint Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Mint"
+    name: MQTT Mint Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Mint"
+    name: MQTT Mint Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Mint"
+    name: MQTT Mint Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Basil (Basil Fawlty)
+  - platform: mqtt
+    state_topic: "miflora/Basil"
+    name: MQTT Basil Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Basil"
+    name: MQTT Basil Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Basil"
+    name: MQTT Basil Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Basil"
+    name: MQTT Basil Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Basil"
+    name: MQTT Basil Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Oregano (Marge)
+  - platform: mqtt
+    state_topic: "miflora/Oregano"
+    name: MQTT Oregano Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Oregano"
+    name: MQTT Oregano Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Oregano"
+    name: MQTT Oregano Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Oregano"
+    name: MQTT Oregano Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Oregano"
+    name: MQTT Oregano Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Petunias (Evans)
+  - platform: mqtt
+    state_topic: "miflora/Petunias"
+    name: MQTT Petunias Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Petunias"
+    name: MQTT Petunias Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Petunias"
+    name: MQTT Petunias Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Petunias"
+    name: MQTT Petunias Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Petunias"
+    name: MQTT Petunias Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Celosia (Fuzzy Wuzzy)
+  - platform: mqtt
+    state_topic: "miflora/Celosia"
+    name: MQTT Celosia Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Celosia"
+    name: MQTT Celosia Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Celosia"
+    name: MQTT Celosia Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Celosia"
+    name: MQTT Celosia Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Celosia"
+    name: MQTT Celosia Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+  
+  # Rosemary (Mary Rose)
+  - platform: mqtt
+    state_topic: "miflora/Rosemary"
+    name: MQTT Rosemary Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Rosemary"
+    name: MQTT Rosemary Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Rosemary"
+    name: MQTT Rosemary Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Rosemary"
+    name: MQTT Rosemary Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "miflora/Rosemary"
+    name: MQTT Rosemary Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+#  Plants  #####################################################################
+plant:
+  plant_parsley:
+    sensors:
+      moisture: sensor.mqtt_parsley_moisture
+      battery: sensor.mqtt_parsley_battery
+      temperature: sensor.mqtt_parsley_temperature
+      conductivity: sensor.mqtt_parsley_conductivity
+      brightness: sensor.mqtt_parsley_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_calibrachoa:
+    sensors:
+      moisture: sensor.mqtt_calibrachoa_moisture
+      battery: sensor.mqtt_calibrachoa_battery
+      temperature: sensor.mqtt_calibrachoa_temperature
+      conductivity: sensor.mqtt_calibrachoa_conductivity
+      brightness: sensor.mqtt_calibrachoa_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_marigold:
+    sensors:
+      moisture: sensor.mqtt_marigold_moisture
+      battery: sensor.mqtt_marigold_battery
+      temperature: sensor.mqtt_marigold_temperature
+      conductivity: sensor.mqtt_marigold_conductivity
+      brightness: sensor.mqtt_marigold_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_mint:
+    sensors:
+      moisture: sensor.mqtt_mint_moisture
+      battery: sensor.mqtt_mint_battery
+      temperature: sensor.mqtt_mint_temperature
+      conductivity: sensor.mqtt_mint_conductivity
+      brightness: sensor.mqtt_mint_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_basil:
+    sensors:
+      moisture: sensor.mqtt_basil_moisture
+      battery: sensor.mqtt_basil_battery
+      temperature: sensor.mqtt_basil_temperature
+      conductivity: sensor.mqtt_basil_conductivity
+      brightness: sensor.mqtt_basil_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_oregano:
+    sensors:
+      moisture: sensor.mqtt_oregano_moisture
+      battery: sensor.mqtt_oregano_battery
+      temperature: sensor.mqtt_oregano_temperature
+      conductivity: sensor.mqtt_oregano_conductivity
+      brightness: sensor.mqtt_oregano_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_petunias:
+    sensors:
+      moisture: sensor.mqtt_petunias_moisture
+      battery: sensor.mqtt_petunias_battery
+      temperature: sensor.mqtt_petunias_temperature
+      conductivity: sensor.mqtt_petunias_conductivity
+      brightness: sensor.mqtt_petunias_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_celosia:
+    sensors:
+      moisture: sensor.mqtt_celosia_moisture
+      battery: sensor.mqtt_celosia_battery
+      temperature: sensor.mqtt_celosia_temperature
+      conductivity: sensor.mqtt_celosia_conductivity
+      brightness: sensor.mqtt_celosia_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_rosemary:
+    sensors:
+      moisture: sensor.mqtt_rosemary_moisture
+      battery: sensor.mqtt_rosemary_battery
+      temperature: sensor.mqtt_rosemary_temperature
+      conductivity: sensor.mqtt_rosemary_conductivity
+      brightness: sensor.mqtt_rosemary_light
+    min_conductivity: 0
+    min_temperature: 5
+
+#  Customize Entities  #########################################################
+homeassistant:
+  customize:
+    plant.plant_parsley:
+      entity_picture: /local/images/parsley.png
+
+    plant.plant_calibrachoa:
+      entity_picture: /local/images/calibrachoa.png
+
+    plant.plant_marigold:
+      entity_picture: /local/images/marigold.png
+
+    plant.plant_mint:
+      entity_picture: /local/images/mint.png
+
+    plant.plant_basil:
+      entity_picture: /local/images/basil.png
+
+    plant.plant_oregano:
+      entity_picture: /local/images/oregano.png
+
+    plant.plant_petunias:
+      entity_picture: /local/images/petunia.png
+
+    plant.plant_celosia:
+      entity_picture: /local/images/celosia.png
+
+    plant.plant_rosemary:
+      entity_picture: /local/images/rosemary.png
+
+################################################################################
+#  ToDo List:
+#    - Add alert automation for plants that are unhealthy

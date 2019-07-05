@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
-#  @package      :  Secrets
-#  @description  :  Home assistant secrets file
+#  @date         :  30/06/2019
+#  @package      :  House Fan
+#  @description  :  Automations for the whole house fan
 ################################################################################
 
 # Copyright 2019 Erin Reed / FireBall1725
@@ -25,30 +25,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 
-#  Secrets  ####################################################################
-# Home information
-home_latitude: 0
-home_longitude: 0
-home_elevation: 0
+#  Automations  ################################################################
+automation:
+  - alias: turn_on_house_fan
+    trigger:
+      - platform: state
+        entity_id: group.fan_doors
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 1
+      - platform: state
+        entity_id: group.fan_windows
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 1
+    action:
+      - service: switch.turn_on
+        entity_id: switch.vera_house_fan
 
-# Abode
-abode_username: 
-abode_password: 
-
-# Nest
-nest_client_id: 
-nest_client_secret: 
-
-# MyQ
-myq_username: 
-myq_password: 
-
-# Raincloud
-raincloud_username: 
-raincloud_password: 
-
-# UniFi
-unifi_username: 
-unifi_password: 
+  - alias: turn_off_house_fan
+    trigger:
+      - platform: state
+        entity_id: group.fan_doors
+        from: 'on'
+        to: 'off'
+      - platform: state
+        entity_id: group.fan_windows
+        from: 'on'
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.vera_house_fan
 
 ################################################################################
+#  ToDo List:
+#    - Fix the doors and windows so they all have to be closed to turn off the
+#      house fan
