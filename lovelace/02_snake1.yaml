@@ -1,0 +1,122 @@
+title: Snake 1 (Sally)
+icon:
+cards:
+  - type: entities
+    entities:
+      - type: section
+        label: Left Sensor
+      - entity: sensor.esp32_snake1_left_humidity
+        name: Humidity
+      - entity: sensor.esp32_snake1_left_temperature
+        name: Temperature
+      - type: custom:battery-entity
+        entity: sensor.esp32_snake1_left_battery_level
+        name: Battery
+      - type: section
+        label: Right Sensor
+      - entity: sensor.esp32_snake1_right_humidity
+        name: Humidity
+      - entity: sensor.esp32_snake1_right_temperature
+        name: Temperature
+      - type: custom:battery-entity
+        entity: sensor.esp32_snake1_right_battery_level
+        name: Battery
+      - type: section
+        label: Average Sensor
+      - entity: sensor.template_snake1_avg_humidity
+        name: Humidity
+      - entity: sensor.template_snake1_avg_temperature
+        name: Temperature
+
+    title: Tank Sensors
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - type: section
+        label: Outlets
+      - entity: switch.vera_snake1_plug1
+        name: Heating Pad
+      - entity: switch.vera_snake1_plug2
+        name: Humidifier
+      - entity: switch.vera_snake1_plug3
+        name: Day Light
+      - entity: switch.vera_snake1_plug4
+        name: Night Light
+      - entity: switch.vera_snake1_plug5
+        name: Plug 5
+      - type: section
+        label: USB
+      - entity: switch.vera_snake1_usb1
+        name: Sensor Board
+      - entity: switch.vera_snake1_usb2
+        name: Display
+      - type: section
+        label: Power Usage
+      - entity: sensor.template_snake1_watts_plug1
+        name: Heading Pad Power
+      - entity: sensor.template_snake1_watts_plug2
+        name: Humidifier Power
+      - entity: sensor.template_snake1_watts_plug3
+        name: Day Light Power
+      - entity: sensor.template_snake1_watts_plug4
+        name: Night Light Power
+      - entity: sensor.template_snake1_watts_plug5
+        name: Plug 5 Power
+    title: Powerstrip
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - type: section
+      - entity: switch.template_snake1_daynight
+        name: Light State
+    title: Light Control
+    show_header_toggle: false
+
+  - type: custom:mini-graph-card
+    name: Temperature
+    icon: mdi:thermometer
+    entities:
+      - entity: sensor.template_snake1_avg_temperature
+        name: Average
+      - entity: sensor.esp32_snake1_left_temperature
+        name: Left
+      - entity: sensor.esp32_snake1_right_temperature
+        name: Right
+    show:
+      fill: false
+    hours_to_show: 12
+    points_per_hour: 2
+
+  - type: custom:mini-graph-card
+    name: Humidity
+    icon: mdi:water-percent
+    entities:
+      - entity: sensor.template_snake1_avg_humidity
+        name: Average
+      - entity: sensor.esp32_snake1_left_humidity
+        name: Left
+      - entity: sensor.esp32_snake1_right_humidity
+        name: Right
+    show:
+      fill: false
+    hours_to_show: 12
+    points_per_hour: 2
+
+  - type: custom:mini-graph-card
+    name: Electricity
+    icon: mdi:flash
+    entities:
+      - entity: sensor.template_snake1_watts_strip
+        name: Total Power (Watts)
+      - entity: sensor.template_snake1_watts_plug1
+        name: Heater
+      - entity: sensor.template_snake1_watts_plug2
+        name: Humidifier
+      - entity: sensor.template_snake1_watts_plug3
+        name: Day Bulb
+      - entity: sensor.template_snake1_watts_plug4
+        name: Night Bulb
+    show:
+      fill: false

@@ -1,0 +1,266 @@
+title: Plants
+icon: mdi:sprout
+cards:
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_parsley
+        name: Garlic Bread (Parsley)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_parsley_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_parsley_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_calibrachoa
+        name: Callie (Calibrachoa)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_calibrachoa_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_calibrachoa_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_marigold
+        name: Rumpelstiltskin (Marigold)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_marigold_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_marigold_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_mint
+        name: Minty Python (Mint)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_mint_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_mint_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_basil
+        name: Basil Fawlty (Basil)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_basil_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_basil_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_oregano
+        name: Marge (Oregano)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_oregano_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_oregano_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_petunias
+        name: Evans (Petunias)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_petunias_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_petunias_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_celosia
+        name: Fuzzy Wuzzy (Celosia)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_celosia_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_celosia_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_rosemary
+        name: Mary Rose (Rosemary)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_rosemary_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_rosemary_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_majesty_palm_1
+        name: Majesty Palm 1 (King)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_majesty_palm_1_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_majesty_palm_1_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true
+  
+  - type: vertical-stack
+    cards:
+      - type: plant-status
+        entity: plant.plant_majesty_palm_2
+        name: Majesty Palm 2 (Queen)
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            icon: mdi:thermometer
+            entities:
+              - entity: sensor.mqtt_majesty_palm_2_temperature
+                name: Temperature
+            points_per_hour: 1
+            animate: true
+          - type: custom:mini-graph-card
+            name: Moisture
+            icon: mdi:water-percent
+            entities:
+              - entity: sensor.mqtt_majesty_palm_2_moisture
+                name: Moisture
+            points_per_hour: 1
+            animate: true

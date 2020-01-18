@@ -1,28 +1,28 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  23/06/2019
+#  @date         :  23-Jun-2019
 #  @package      :  Cloud
 #  @description  :  Settings for the Google Home and Apple Homekit integrations
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
 #  Cloud Settings  #############################################################
@@ -30,34 +30,132 @@ cloud:
   google_actions:
     filter:
       include_entities:
+        # Front Door
+        - light.group_frontdoor_light
+
+        # Living Room
         - light.group_livingroom_light
+
+        # Kitchen
+        - light.group_kitchen_light
+
+        # Room 1 (Erin's Room)
         - light.group_room1_light
+
+        # Room 2 (Stream Room)
+        - light.group_room2_light
+
+        # Room 3 (Tech Room)
+
+        # Room 4 (James' Room)
         - light.group_room4_light
-        - switch.vera_house_fan
+        - sensor.mqtt_room4_sensor_temperature
         - switch.vera_room4_tardis
+
+        # Misc
+        - switch.vera_house_fan
+
+        # Scenes
+        - scene.cooking
+        - scene.kitchendefault
     entity_config:
+      light.group_frontdoor_light:
+        name: Front Porch
+        room: Front Door
+
       light.group_livingroom_light:
         name: Living Room
         room: Living Room
+
+      light.group_kitchen_light:
+        name: Lights
+        room: Kitchen
+
       light.group_room1_light:
         name: Lights
         room: Erin's Room
+
+      light.group_room2_light:
+        name: Lights
+        room: Erin's Office
+
       light.group_room4_light:
         name: Lights
         room: James' Room
+
+      sensor.mqtt_room4_sensor_temperature:
+        name: Temperature
+        room: James' Room
+
+      switch.vera_room4_tardis:
+        name: Tardis Lights
+
       switch.vera_house_fan:
         name: House Fan
         room: Global
-      switch.vera_room4_tardis:
-        name: Tardis Lights
+
+      scene.cooking:
+        name: Cooking
+
+      scene.kitchendefault:
+        name: Kitchen Default
 
 #  Apple Homekit Settings  #####################################################
 homekit:
   filter:
     include_entities:
+      - light.group_frontdoor_light
+      - light.group_balcony_light
+      - light.group_kitchen_light
       - light.group_livingroom_light
+      - light.group_room1_light
+      - light.group_room2_light
+      - light.group_room4_light
+      - switch.vera_room4_tardis
+      - switch.vera_house_fan
+      - climate.living_room
+      - climate.master_bedroom
+      - person.erin_reed
+      - person.james_ciup
+      - sensor.template_snake1_avg_humidity
+      - sensor.template_snake1_avg_temperature
+      - sensor.template_snake2_avg_humidity
+      - sensor.template_snake2_avg_temperature
+
   entity_config:
+    light.group_frontdoor_light:
+      name: Front Porch
+    light.group_balcony_light:
+      name: Balcony Lights
+    light.group_kitchen_light:
+      name: Kitchen Lights
     light.group_livingroom_light:
       name: Living Room Lights
+    light.group_room1_light:
+      name: Erin's Room Lights
+    light.group_room2_light:
+      name: Erin's Office Lights
+    light.group_room4_light:
+      name: James' Room Lights
+    switch.vera_room4_tardis:
+      name: Tardis Lights
+    switch.vera_house_fan:
+      name: House Fan
+    climate.living_room:
+      name: Living Room
+    climate.master_bedroom:
+      name: Master Bedroom
+    person.erin_reed:
+      name: Erin Reed
+    person.james_ciup:
+      name: James Ciup
+    sensor.template_snake1_avg_humidity:
+      name: Sally's Tank
+    sensor.template_snake1_avg_temperature:
+      name: Sally's Tank
+    sensor.template_snake2_avg_humidity:
+      name: Salazar's Tank
+    sensor.template_snake2_avg_temperature:
+      name: Salazar's Tank
 
 ################################################################################

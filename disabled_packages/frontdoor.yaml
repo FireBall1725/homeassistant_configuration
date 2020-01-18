@@ -1,0 +1,148 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  29-Aug-2019
+#  @package      :  Front Door
+#  @description  :  Automations for the front door area
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Input Booleans  #############################################################
+input_boolean:
+  frontdoor_light_automatic:
+
+#  Lights  #####################################################################
+light:
+  - platform: group
+    name: Group Frontdoor Light
+    entities:
+      - light.lightify_frontdoor_light1
+
+#  Automations  ################################################################
+automation:
+  - alias: frontdoor_light_on_motion
+    trigger:
+      platform: state
+      entity_id: binary_sensor.outside_camera_person_detected
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: state
+          entity_id: light.group_frontdoor_light1
+          state: 'off'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_frontdoor_light1
+        #data:
+        #  brightness: 255
+        #  color_temp: 250
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.frontdoor_light_automatic
+
+  - alias: frontdoor_light_off_motion
+    trigger:
+      platform: state
+      entity_id: binary_sensor.outside_camera_person_detected
+      from: 'on'
+      to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.frontdoor_light_automatic
+        state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id: light.group_frontdoor_light1
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.frontdoor_light_automatic
+
+  # sensor.lutron_frontdoor_light
+  # Frontdoor Light Switch
+  - alias: switch_frontdoor_on
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_frontdoor_lightswitch
+      to: '1'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_frontdoor_light
+        #data:
+        #  brightness: 255
+        #  color_temp: 250
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.frontdoor_light_automatic
+
+  - alias: switch_frontdoor_off
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_frontdoor_lightswitch
+      to: '4'
+    action:
+      - service: light.turn_off
+        entity_id: light.group_frontdoor_light
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.frontdoor_light_automatic
+
+  - alias: switch_frontdoor_holiday_toggle
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_frontdoor_lightswitch
+      to: '2'
+    action:
+      - service: script.toggle
+        data:
+          entity_id: script.front_light_orange
+
+#  Scripts  ####################################################################
+script:
+  front_light_orange:
+    alias: Front Light Orange
+    sequence:
+      - alias: Set light to orange
+        service: light.turn_on
+        data:
+          entity_id: light.group_frontdoor_light
+          rgb_color: [255, 126, 0]
+      - delay: "00:00:01"
+      - alias: loop to purple
+        service: script.turn_on
+        data:
+          entity_id: script.front_light_purple
+
+  front_light_purple:
+    alias: Front Light Purple
+    sequence:
+      - alias: Set light to purple
+        service: light.turn_on
+        data:
+          entity_id: light.group_frontdoor_light
+          rgb_color: [190, 0, 255]
+      - delay: "00:00:01"
+      - alias: loop to orange
+        service: script.turn_on
+        data:
+          entity_id: script.front_light_orange
+
+################################################################################

@@ -1,40 +1,42 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/05/2019
+#  @date         :  5-Jan-2019
 #  @package      :  Configuration
-#  @description  :  Home assistant main configuration file
+#  @description  :  Home Assistant main configuration file
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
 #  Home Assistant Settings  ####################################################
 homeassistant:
-  name: FireKatt 2
+  name: FireKatt 3
   latitude: !secret home_latitude
   longitude: !secret home_longitude
   elevation: !secret home_elevation
   unit_system: metric
-  time_zone: America/Vancouver
- # customize: !include customize.yaml
+  time_zone: America/Toronto
+  # customize: !include customize.yaml
   packages: !include_dir_named packages
+
+config:
 
 #  Discovery  ##################################################################
 discovery:
@@ -50,48 +52,17 @@ http:
 
 #  Sensors  ####################################################################
 sensor:
-  - platform: yr
-#  - platform: openevse
-#    host: 10.0.1.6
-#    monitored_variables:
-#      - status
-#      - charge_time
-#      - rtc_temp
-#      - ir_temp
-#      - ambient_temp
-#      - usage_session
-#      - usage_total
+  - platform: dnsip
+    hostname: !secret dns_hostname
+    name: Home Assistant IP
+    resolver: !secret dns_resolver
 
 #  Lovelace UI  ################################################################
 lovelace:
   mode: yaml
 
-#  Text to speech  #############################################################
-tts:
-  - platform: google_translate
-
-#  Switches  ###################################################################
-switch:
-  - platform: flux
-    lights:
-      - light.group_livingroom_light
-    name: Flux Livingroom Light
-    mode: mired
-    transition: 5
-    interval: 180
-    start_colortemp: 6000
-    sunset_colortemp: 4000
-
-#  Lights  #####################################################################
-light:
-  - platform: group
-    name: Group Livingroom Light
-    entities:
-      - light.lightify_livingroom_light_1
-      - light.lightify_livingroom_light_2
-      - light.lightify_livingroom_light_3
-      - light.lightify_livingroom_light_4
+#  Home Assistant Community Store  #############################################
+  hacs:
+    token: !secret hacs_token
 
 ################################################################################
-#  ToDo List:
-#    - Cleanup configuration, move items to packages folder

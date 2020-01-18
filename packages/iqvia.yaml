@@ -1,0 +1,85 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  26-Jul-2019
+#  @package      :  IQVIDA
+#  @description  :  Adds the IQVIDA sensors
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  IQVIDA  #####################################################################
+iqvia:
+  zip_code: !secret home_postalcode
+  monitored_conditions:
+    - allergy_index_today
+    - allergy_average_forecasted
+    - disease_index_today
+    - disease_average_forecasted
+    - asthma_index_today
+    - asthma_average_forecasted
+
+#  Sensors  ####################################################################
+sensor:
+  - platform: template
+    sensors:
+      template_avg_pollen_level:
+        friendly_name: 'Average Pollen Level'
+        value_template: >-
+          {{ state_attr('sensor.allergy_index_forecasted_average', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.allergy_index_forecasted_average', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+      template_avg_cold_flu_risk:
+        friendly_name: 'Average Cold & Flu Risk'
+        value_template: >-
+          {{ state_attr('sensor.cold_flu_forecasted_average', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.cold_flu_forecasted_average', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+      template_avg_asthma_level:
+        friendly_name: 'Average Asthma Index'
+        value_template: >-
+          {{ state_attr('sensor.asthma_index_forecasted_average', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.asthma_index_forecasted_average', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+      template_today_pollen_level:
+        friendly_name: 'Pollen Level'
+        value_template: >-
+          {{ state_attr('sensor.allergy_index_today', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.allergy_index_today', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+      template_today_cold_flu_risk:
+        friendly_name: 'Cold & Flu Risk'
+        value_template: >-
+          {{ state_attr('sensor.cold_flu_index_today', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.cold_flu_index_today', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+      template_today_asthma_level:
+        friendly_name: 'Asthma Index'
+        value_template: >-
+          {{ state_attr('sensor.asthma_index_today', 'rating') }}
+        entity_picture_template: >-
+          {{ '/local/images/' ~ state_attr('sensor.asthma_index_today', 'rating').lower().replace('/', '-') ~ '.png'}}
+
+################################################################################

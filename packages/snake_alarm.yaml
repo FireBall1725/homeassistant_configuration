@@ -1,0 +1,89 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  10-Aug-2019
+#  @package      :  Snake Alarm
+#  @description  :  Automations for the snake feed alarm
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Input Booleans  #############################################################
+input_boolean:
+  snake1_fed:
+  snake2_fed:
+
+#  Automations  ################################################################
+automation:
+  - alias: babysnake_alarm
+    trigger:
+      - platform: time_pattern
+        minutes: '/30'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: group.all_people
+          state: 'home'
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: input_boolean.snake1_fed
+              state: 'off'
+            - condition: state
+              entity_id: input_boolean.snake2_fed
+              state: 'off'
+    action:
+      - service: media_player.play_media
+        data_template:
+          entity_id: media_player.erins_room_display
+          media_content_id: "http://{{ states('sensor.home_assistant_ip') }}:8123/local/snake_alarm.mp3"
+          media_content_type: 'audio/mp3'
+      - service: media_player.play_media
+        data_template:
+          entity_id: media_player.living_room_speaker
+          media_content_id: "http://{{ states('sensor.home_assistant_ip') }}:8123/local/snake_alarm.mp3"
+          media_content_type: 'audio/mp3'
+      - service: media_player.play_media
+        data_template:
+          entity_id: media_player.james_room_display
+          media_content_id: "http://{{ states('sensor.home_assistant_ip') }}:8123/local/snake_alarm.mp3"
+          media_content_type: 'audio/mp3'
+      - service: media_player.play_media
+        data_template:
+          entity_id: media_player.kitchen_display
+          media_content_id: "http://{{ states('sensor.home_assistant_ip') }}:8123/local/snake_alarm.mp3"
+          media_content_type: 'audio/mp3'
+
+  - alias: babysnake_eatclear
+    trigger:
+      - platform: time
+        at: '16:59:00'
+    condition:
+      - condition: time
+        weekday:
+          - sat
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.snake1_fed
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.snake2_fed
+
+################################################################################

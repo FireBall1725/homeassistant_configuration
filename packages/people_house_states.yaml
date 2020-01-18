@@ -1,0 +1,137 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  20-Jul-2019
+#  @package      :  People & House States
+#  @description  :  Automations and settings the residents and residence
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Sensors  ####################################################################
+sensor:
+  - platform: template
+    sensors:
+      erin_reed:
+        friendly_name: Erin Reed
+        entity_id:
+          - sensor.time
+          - binary_sensor.abode_room1_door
+        value_template: >-
+          {% if is_state('person.erin_reed', 'home') %}
+            {% if (as_timestamp(now()) -
+              as_timestamp(states.binary_sensor.abode_room1_door.last_changed) > 300)
+              and (now().hour >= 21 or now().hour <= 7)
+              and is_state('binary_sensor.abode_room1_door', 'off') %}
+              sleep
+            {% else %}
+              home
+            {% endif %}
+          {% else %}
+            away
+          {% endif %}
+
+      james_ciup:
+        friendly_name: James Ciup
+        entity_id:
+          - sensor.time
+          - binary_sensor.abode_room2_door
+        value_template: >-
+          {% set d = as_timestamp(now()) | timestamp_custom('%Y-%m-%d 08:00:00.0%z', true) %}
+          {% if is_state('person.james_ciup', 'home') %}
+            {% if (as_timestamp(now()) -
+                as_timestamp(states.binary_sensor.abode_room2_door.last_changed) > 300)
+                and (now().hour >= 21 or now().hour <= 7)
+                and is_state('binary_sensor.abode_room2_door', 'off') %}
+              sleep
+            {% elif (now().hour >= 8)
+                and as_timestamp(states.binary_sensor.abode_room2_door.last_changed) <= as_timestamp(d)
+                and is_state('binary_sensor.abode_room2_door', 'off') %}
+              sleep
+            {% else %}
+              home
+            {% endif %}
+          {% else %}
+            away
+          {% endif %}
+
+      house_state:
+        friendly_name: House State
+        entity_id: sensor.time
+        value_template: >-
+          {% set erin = states.sensor.erin_reed.state %}
+          {% set james = states.sensor.james_ciup.state %}
+
+          {% if erin == 'sleep' and james == 'sleep' %}
+            sleep
+          {% elif erin == 'away' and james == 'away' %}
+            away
+          {% else %}
+            home
+          {% endif %}
+
+#  Binary Sensors  #############################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      template_room1_asleep:
+        friendly_name: Erin Asleep
+        value_template: >-
+          {% if is_state('sun.sun', 'below_horizon')
+            or false %}
+            {% if is_state('binary_sensor.abode_room1_door', 'off') %}
+              True
+            {% endif %}
+          {% endif %}
+
+      template_room4_asleep:
+        friendly_name: Jame's Asleep
+        value_template: >-
+          {% if is_state('sun.sun', 'below_horizon')
+            or false %}
+            {% if is_state('binary_sensor.abode_room4_door', 'off') %}
+              True
+            {% endif %}
+          {% endif %}
+
+      template_house_asleep:
+        friendly_name: House Asleep
+        value_template: >-
+          {% set room1 = 'on' %}
+          {% set room4 = 'on' %}
+
+          {% if is_state('person.erin_reed', 'home') %}
+            {% set room1 = states('binary_sensor.template_room1_asleep') %}
+          {% endif %}
+
+          {% if is_state('person.james_ciup', 'home') %}
+            {% set room4 = states('binary_sensor.template_room4_asleep') %}
+          {% endif %}
+
+          {% if room1 == 'on'
+            and room4 == 'on' %}
+            True
+          {% endif %}
+
+################################################################################
+#  ToDo List:
+#    - Away for more than 300 seconds before state change
+#    - General cleanup of scripts
+#    - Move people states to people files

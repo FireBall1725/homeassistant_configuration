@@ -1,28 +1,28 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  04/07/2019
+#  @date         :  04-Jul-2019
 #  @package      :  Plants
 #  @description  :  Automations and settings for all the house plants
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
 #  Sensors  ####################################################################
@@ -354,7 +354,7 @@ sensor:
     unit_of_measurement: '%'
     device_class: battery
     force_update: true
-  
+
   # Rosemary (Mary Rose)
   - platform: mqtt
     state_topic: "miflora/Rosemary"
@@ -391,6 +391,88 @@ sensor:
   - platform: mqtt
     state_topic: "miflora/Rosemary"
     name: MQTT Rosemary Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Majesty Palm #1 (King)
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_1"
+    name: MQTT Majesty Palm 1 Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_1"
+    name: MQTT Majesty Palm 1 Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_1"
+    name: MQTT Majesty Palm 1 Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_1"
+    name: MQTT Majesty Palm 1 Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_1"
+    name: MQTT Majesty Palm 1 Battery
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: '%'
+    device_class: battery
+    force_update: true
+
+  # Majesty Palm #2 (Queen)
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_2"
+    name: MQTT Majesty Palm 2 Temperature
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: '°C'
+    device_class: temperature
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_2"
+    name: MQTT Majesty Palm 2 Moisture
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: '%'
+    device_class: humidity
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_2"
+    name: MQTT Majesty Palm 2 Light
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: 'lux'
+    device_class: illuminance
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_2"
+    name: MQTT Majesty Palm 2 Conductivity
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: 'μS/cm'
+    icon: mdi:emoticon-poop
+    force_update: true
+
+  - platform: mqtt
+    state_topic: "livingroom/Majesty_Palm_2"
+    name: MQTT Majesty Palm 2 Battery
     value_template: '{{ value_json.battery | int }}'
     unit_of_measurement: '%'
     device_class: battery
@@ -447,6 +529,7 @@ plant:
       brightness: sensor.mqtt_basil_light
     min_conductivity: 0
     min_temperature: 5
+    max_moisture: 80
 
   plant_oregano:
     sensors:
@@ -487,6 +570,27 @@ plant:
       brightness: sensor.mqtt_rosemary_light
     min_conductivity: 0
     min_temperature: 5
+    min_moisture: 5
+
+  plant_majesty_palm_1:
+    sensors:
+      moisture: sensor.mqtt_majesty_palm_1_moisture
+      battery: sensor.mqtt_majesty_palm_1_battery
+      temperature: sensor.mqtt_majesty_palm_1_temperature
+      conductivity: sensor.mqtt_majesty_palm_1_conductivity
+      brightness: sensor.mqtt_majesty_palm_1_light
+    min_conductivity: 0
+    min_temperature: 5
+
+  plant_majesty_palm_2:
+    sensors:
+      moisture: sensor.mqtt_majesty_palm_2_moisture
+      battery: sensor.mqtt_majesty_palm_2_battery
+      temperature: sensor.mqtt_majesty_palm_2_temperature
+      conductivity: sensor.mqtt_majesty_palm_2_conductivity
+      brightness: sensor.mqtt_majesty_palm_2_light
+    min_conductivity: 0
+    min_temperature: 5
 
 #  Customize Entities  #########################################################
 homeassistant:
@@ -517,6 +621,12 @@ homeassistant:
 
     plant.plant_rosemary:
       entity_picture: /local/images/rosemary.png
+
+    plant.plant_majesty_palm_1:
+      entity_picture: /local/images/majesty_palm.png
+
+    plant.plant_majesty_palm_2:
+      entity_picture: /local/images/majesty_palm.png
 
 ################################################################################
 #  ToDo List:

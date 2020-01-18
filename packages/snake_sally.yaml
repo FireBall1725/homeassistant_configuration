@@ -1,28 +1,28 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  23/06/2019
+#  @date         :  23-Jun-2019
 #  @package      :  Sally (Snake)
 #  @description  :  Automations and settings for Sally's tank
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
 #  Automations  ################################################################
@@ -47,7 +47,7 @@ automation:
     trigger:
       platform: numeric_state
       entity_id: sensor.template_snake1_avg_humidity
-      below: 50
+      below: 60
     action:
       service: switch.turn_on
       entity_id: switch.vera_snake1_plug2
@@ -56,10 +56,56 @@ automation:
     trigger:
       platform: numeric_state
       entity_id: sensor.template_snake1_avg_humidity
-      above: 65
+      above: 75
     action:
       service: switch.turn_off
       entity_id: switch.vera_snake1_plug2
+
+  - alias: snake1_fog_alert
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.template_snake1_watts_plug2
+        below: 1
+    condition:
+      - condition: state
+        entity_id: switch.vera_snake1_plug2
+        state: 'on'
+    action:
+      - service: notify.discord
+        data:
+          message: ":snake: Sally's humidifier is potentially out of water <@93194491795607552>"
+          target: ["541658746485473290"]
+
+  - alias: snake1_esp_failure
+    trigger:
+      - platform: state
+        entity_id: sensor.esp32_snake1_left_humidity
+      - platform: state
+        entity_id: sensor.esp32_snake1_right_humidity
+    action:
+      - service: timer.start
+        entity_id: timer.snake1_esp_timeout
+        data_template:
+          duration: '00:05:00'
+
+  - alias: snake1_esp_failure_timer
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.snake1_esp_timeout
+    action:
+      - service: notify.discord
+        data:
+          message: ":snake: Sending restarting signal to Sally's tank monitor as it has gone unresponsive. Keep an eye to see if it comes back online <@93194491795607552>"
+          target: ["541658746485473290"]
+      - service: switch.turn_on
+        entity_id: switch.restart
+
+#  Timers  #####################################################################
+timer:
+  snake1_esp_timeout:
+    duration: '00:05:00'
 
 #  Sensors  ####################################################################
 sensor:
@@ -74,6 +120,36 @@ sensor:
         value_template: '{{ ((float(states.sensor.esp32_snake1_left_temperature.state) + float(states.sensor.esp32_snake1_right_temperature.state)) / 2) | round(2) }}'
         unit_of_measurement: "°C"
         icon_template: "mdi:thermometer"
+
+      template_snake1_watts_strip:
+        value_template: '{{ states.switch.vera_snake1_strip.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
+
+      template_snake1_watts_plug1:
+        value_template: '{{ states.switch.vera_snake1_plug1.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
+
+      template_snake1_watts_plug2:
+        value_template: '{{ states.switch.vera_snake1_plug2.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
+
+      template_snake1_watts_plug3:
+        value_template: '{{ states.switch.vera_snake1_plug3.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
+
+      template_snake1_watts_plug4:
+        value_template: '{{ states.switch.vera_snake1_plug4.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
+
+      template_snake1_watts_plug5:
+        value_template: '{{ states.switch.vera_snake1_plug5.attributes.current_power_w }}'
+        unit_of_measurement: "W"
+        icon_template: "mdi:flash"
 
 #  Switches  ###################################################################
 switch:
@@ -126,48 +202,47 @@ homeassistant:
     script.snake1_day:
       icon: mdi:weather-sunny
       friendly_name: Snake 1 - Day Script
-    
+
     script.snake1_night:
       icon: mdi:weather-night
       friendly_name: Snake 1 - Night Script
-    
+
     switch.template_snake1_daynight:
       icon: mdi:theme-light-dark
       friendly_name: Snake 1 - Light State
-    
+
     automation.snake1_day:
       icon: mdi:weather-sunny
       friendly_name: Snake 1 - Day Automation
-    
+
     automation.snake1_night:
       icon: mdi:weather-night
       friendly_name: Snake 1 - Night Automation
-    
+
     switch.vera_snake1_plug1:
       icon: mdi:radiator
-    
+
     switch.vera_snake1_plug2:
       icon: mdi:water-percent
-    
+
     switch.vera_snake1_plug3:
       icon: mdi:lightbulb
-    
+
     switch.vera_snake1_plug4:
       icon: mdi:lightbulb
-    
+
     switch.vera_snake1_plug5:
       icon: mdi:power-socket-us
-    
+
     switch.vera_snake1_usb1:
       icon: mdi:usb
-    
+
     switch.vera_snake1_usb2:
       icon: mdi:usb
-    
+
     switch.vera_snake1_plugall:
       hidden: true
 
 ################################################################################
 #  ToDo List:
-#    - Add automations for humidifier
 #    - Add alerts for water out on humidifier

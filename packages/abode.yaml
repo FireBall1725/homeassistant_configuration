@@ -1,41 +1,36 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  23/06/2019
+#  @date         :  23-Jun-2019
 #  @package      :  Abode
 #  @description  :  Automations and settings for the home alarm system
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-#  Abode Alarm  ################################################################
-abode:
-  username: !secret abode_username
-  password: !secret abode_password
 
 #  Automations  ################################################################
 automation:
   - alias: alarm_arm_away
     trigger:
       platform: state
-      entity_id: group.all_devices
+      entity_id: group.all_people
       from: 'home'
       to: 'not_home'
       for:
@@ -46,7 +41,7 @@ automation:
   - alias: alarm_disarm_home
     trigger:
       platform: state
-      entity_id: group.all_devices
+      entity_id: group.all_people
       from: 'not_home'
       to: 'home'
     condition:
@@ -56,14 +51,139 @@ automation:
     action:
       service: alarm_control_panel.alarm_disarm
 
+  - alias: alarm_arm_sleep
+    trigger:
+      platform: state
+      entity_id: binary_sensor.template_house_asleep
+      from: 'off'
+      to: 'on'
+      for:
+        minutes: 5
+    condition:
+      condition: state
+      entity_id: group.all_people
+      state: 'home'
+    action:
+      service: alarm_control_panel.alarm_arm_home
+
+  - alias: alarm_disarm_awake
+    trigger:
+      platform: state
+      entity_id: binary_sensor.template_house_asleep
+      from: 'on'
+      to: 'off'
+    condition:
+      condition: state
+      entity_id: alarm_control_panel.abode_alarm
+      state: 'armed_home'
+    action:
+      service: alarm_control_panel.alarm_disarm
+
+#  Binary Sensors  #############################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      abode_entry_door_front_battery:
+        friendly_name: Front Door Battery
+        value_template: "{{ state_attr('binary_sensor.abode_entry_door_front', 'battery_low') }}"
+        device_class: battery
+
+      abode_entry_door_garage_battery:
+        friendly_name: Garage Door Battery
+        value_template: "{{ state_attr('binary_sensor.abode_entry_door_garage', 'battery_low') }}"
+        device_class: battery
+
+      abode_entry_keypad_battery_2:
+        friendly_name: Keypad Entry Battery 2
+        value_template: "{{ state_attr('binary_sensor.abode_entry_keypad_2', 'battery_low') }}"
+        device_class: battery
+
+      abode_livingroom_door_battery:
+        friendly_name: Livingroom Door Battery
+        value_template: "{{ state_attr('binary_sensor.abode_livingroom_door', 'battery_low') }}"
+        device_class: battery
+
+      abode_room1_door_battery:
+        friendly_name: Erin's Room Door Battery
+        value_template: "{{ state_attr('binary_sensor.abode_room1_door', 'battery_low') }}"
+        device_class: battery
+
+      abode_room4_door_battery:
+        friendly_name: James' Room Door Battery
+        value_template: "{{ state_attr('binary_sensor.abode_room4_door', 'battery_low') }}"
+        device_class: battery
+
 #  Customize Entities  #########################################################
 homeassistant:
   customize:
     automation.alarm_arm_away:
       icon: mdi:shield-lock-outline
-    
+
     automation.alarm_disarm_home:
       icon: mdi:shield-off-outline
+
+    binary_sensor.abode_dining_window1:
+      device_class: window
+      friendly_name: Dining Room (Left)
+
+    binary_sensor.abode_dining_window2:
+      device_class: window
+      friendly_name: Dining Room (Right)
+
+    binary_sensor.abode_entry_door_front:
+      device_class: door
+      friendly_name: Front Door
+
+    binary_sensor.abode_entry_door_garage:
+      device_class: door
+      friendly_name: Garage Door
+
+    binary_sensor.abode_entry_door_side:
+      device_class: door
+      friendly_name: Side Door (Entry)
+
+    binary_sensor.abode_garage_door_side:
+      device_class: door
+      friendly_name: Side Door (Garage)
+
+    binary_sensor.abode_livingroom_door:
+      device_class: door
+      friendly_name: Living Room Door
+
+    binary_sensor.abode_livingroom_window1:
+      device_class: window
+      friendly_name: Living Room Window (Left)
+
+    binary_sensor.abode_livingroom_window2:
+      device_class: window
+      friendly_name: Living Room Window (Right)
+
+    binary_sensor.abode_room1_door:
+      device_class: door
+      friendly_name: Erin's Room Door
+
+    binary_sensor.abode_room1_window1:
+      device_class: window
+      friendly_name: Erin's Room Window (Left)
+
+    binary_sensor.abode_room1_window2:
+      device_class: window
+      friendly_name: Erin's Room Window (Right)
+
+    binary_sensor.abode_room4_door:
+      device_class: door
+      friendly_name: James' Room Door
+
+    binary_sensor.abode_room4_window1:
+      device_class: window
+      friendly_name: James' Room Window (Left)
+
+    binary_sensor.abode_room4_window2:
+      device_class: window
+      friendly_name: James' Room Window (Right)
+
+    lock.abode_entry_door_front:
+      friendly_name: Front Door Lock
 
 #  Groups  #####################################################################
 group:
@@ -75,5 +195,3 @@ group:
       - automation.alarm_disarm_home
 
 ################################################################################
-#  ToDo List:
-#    - Add alarm arm home at night when everyone is asleep

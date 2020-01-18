@@ -1,0 +1,18 @@
+title: FireKatt 3
+cards:
+  - type: entities
+    entities:
+      - entity: light.group_livingroom_light
+      - entity: sensor.living_room_thermostat_temperature
+      - entity: sensor.living_room_thermostat_humidity
+      - entity: binary_sensor.abode_livingroom_door
+      - entity: binary_sensor.abode_livingroom_window1
+      - entity: binary_sensor.abode_livingroom_window2
+      - entity: sensor.living_room_thermostat_operation_mode
+      - entity: sensor.living_room_thermostat_target
+    title: Livingroom
+
+  - type: entities
+    entities:
+      - entity: light.group_kitchen_light
+    title: Kitchen

@@ -1,0 +1,175 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  17-Jul-2019
+#  @package      :  Balcony
+#  @description  :  Settings and automations for the balcony
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Switches  ###################################################################
+switch:
+  - platform: flux
+    lights:
+      - light.group_balcony_light
+    name: Flux Balcony Light
+    mode: mired
+    transition: 5
+    interval: 300
+    start_colortemp: 6000
+    sunset_colortemp: 4000
+
+#  Lights  #####################################################################
+light:
+  - platform: group
+    name: Group Balcony Light
+    entities:
+      - light.lightify_balcony_light1
+      - light.lightify_balcony_light2
+      - light.lightify_balcony_light3
+
+#  Automations  ################################################################
+automation:
+  # Balcony Light Switch
+  - alias: switch_balcony_on
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_balcony_lightswitch
+      to: '1'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_balcony_light
+
+  - alias: switch_balcony_off
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_balcony_lightswitch
+      to: '4'
+    action:
+      - service: light.turn_off
+        entity_id: light.group_balcony_light
+
+  - alias: switch_balcony_centre
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_balcony_lightswitch
+      to: '2'
+    action:
+      - service: switch.toggle
+        entity_id: switch.flux_balcony_light
+
+  - alias: switch_balcony_brightness_down_fast
+    trigger:
+      - platform: time_pattern
+        seconds: '*'
+    condition:
+      - condition: state
+        entity_id: sensor.lutron_balcony_lightswitch
+        state: '16'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_balcony_light
+        data_template:
+          brightness: "{{ [0, state_attr('light.group_balcony_light', 'brightness')|int(0) - 36]|max }}"
+          transition: '2'
+
+  - alias: switch_balcony_brightness_up_fast
+    trigger:
+      - platform: time_pattern
+        seconds: '*'
+    condition:
+      - condition: state
+        entity_id: sensor.lutron_balcony_lightswitch
+        state: '8'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_balcony_light
+        data_template:
+          brightness: "{{ [255, state_attr('light.group_balcony_light', 'brightness')|int(0) + 36]|min }}"
+          transition: '2'
+
+  - alias: switch_balcony_brightness_down_slow
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_balcony_lightswitch
+      to: '16'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_balcony_light
+        data_template:
+          brightness: "{{ [0, state_attr('light.group_balcony_light', 'brightness')|int(0) - 16]|max }}"
+
+  - alias: switch_balcony_brightness_up_slow
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_balcony_lightswitch
+      to: '8'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_balcony_light
+        data_template:
+          brightness: "{{ [255, state_attr('light.group_balcony_light', 'brightness')|int(0) + 16]|min }}"
+  # Balcony Water Switch
+  - alias: switch_water_on
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_patio_waterswitch
+      to: '1'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.hose_manual_watering
+
+  - alias: switch_water_off
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_patio_waterswitch
+      to: '4'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.hose_manual_watering
+
+  - alias: switch_auto_water_off
+    trigger:
+      platform: state
+      entity_id: switch.hose_manual_watering
+      from: 'off'
+      to: 'on'
+      for:
+          minutes: 5
+    action:
+      - service: switch.turn_off
+        entity_id: switch.hose_manual_watering
+
+  # Flex Update
+  - alias: flux_balcony_update
+    trigger:
+      - platform: state
+        entity_id: light.group_balcony_light
+        from: 'off'
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: switch.flux_balcony_light
+        state: 'on'
+    action:
+      service: switch.flux_balcony_light_update
+
+################################################################################

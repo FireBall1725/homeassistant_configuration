@@ -1,0 +1,29 @@
+title: Security
+icon: mdi:shield-home
+cards:
+  - type: alarm-panel
+    entity: alarm_control_panel.abode_alarm
+
+  - type: entities
+    entities:
+      - entity: person.erin_reed
+        name: Erin Reed
+      - entity: person.james_ciup
+        name: James Ciup
+    title: People
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - entity: binary_sensor.abode_entry_door_front
+      - entity: binary_sensor.abode_entry_door_garage
+      - entity: binary_sensor.abode_livingroom_door
+    title: Doors
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - entity: binary_sensor.abode_room1_door
+      - entity: binary_sensor.abode_room2_door
+    title: Room Doors
+    show_header_toggle: false

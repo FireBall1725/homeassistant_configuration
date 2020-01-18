@@ -1,0 +1,175 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  27-Jul-2019
+#  @package      :  OpenEVSE
+#  @description  :  Automations and settings for the EV Car Charger
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Credit  #####################################################################
+# OpenEVSE code copied from a3a (https://community.home-assistant.io/u/a3a)
+# modified slightly for my own use
+
+#  Sensors  ####################################################################
+sensor:
+  - platform: rest
+    name: "OpenEVSE RAPI $GU"
+    resource: 'http://10.0.1.6/r?json=1&rapi=$GU'
+    headers:
+        User-Agent: Home Assistant
+        Content-Type: application/json
+    json_attributes: [ 'cmd', 'ret' ]
+    value_template: '{{state_attr("sensor.openevse_rapi_gu", "ret")}}'
+
+  - platform: template
+    sensors:
+      openevse_session_energy:
+        friendly_name: "OpenEVSE Session Energy"
+        icon_template: mdi:gauge
+        unit_of_measurement: 'kWh'
+        value_template: >-
+          {%- if states('sensor.openevse_rapi_gu') == 'unknown' -%}
+            0.0
+          {%- else -%}
+            {%- set ret = state_attr('sensor.openevse_rapi_gu', 'ret') -%}
+            {%- if ret == None -%}
+              0.0
+            {%- else -%}
+              {%- set rgx = '(?<=^\$OK )[0-9]+' -%}
+              {%- if ret|regex_search(rgx) -%}
+                {%- set v = ret | regex_findall_index(rgx) -%}
+                {{- (v|float / 3600000)|round(2) -}}
+              {%- else -%}
+                0.0
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+
+      openevse_state:
+        friendly_name: "OpenEVSE State"
+        icon_template: >-
+          {%- if states('sensor.openevse_mqtt_state') | regex_match('^[01]$') -%}
+            mdi:power-plug-off
+          {%- elif is_state('sensor.openevse_mqtt_state', '2') -%}
+            mdi:car-electric
+          {%- elif is_state('sensor.openevse_mqtt_state', '3') -%}
+            mdi:battery-charging
+          {%- elif states('sensor.openevse_mqtt_state') | regex_match('^([456789]|10)$') -%}
+            mdi:battery-alert
+          {%- elif is_state('sensor.openevse_mqtt_state', '254') -%}
+            mdi:sleep
+          {%- elif is_state('sensor.openevse_mqtt_state', '255') -%}
+            mdi:power-off
+          {%- else -%}
+            mdi:battery-unknown
+          {%- endif -%}
+        value_template: >-
+          {%- if states('sensor.openevse_mqtt_state') | regex_match('^[01]$') -%}
+            Ready
+          {%- elif is_state('sensor.openevse_mqtt_state', '2') -%}
+            Connected
+          {%- elif is_state('sensor.openevse_mqtt_state', '3') -%}
+            Charging
+          {%- elif states('sensor.openevse_mqtt_state') | regex_match('^([456789]|10)$') -%}
+            Error
+          {%- elif is_state('sensor.openevse_mqtt_state', '254') -%}
+            Sleep
+          {%- elif is_state('sensor.openevse_mqtt_state', '255') -%}
+            Disabled
+          {%- else -%}
+            Unknown-{{- value -}}
+          {%- endif -%}
+
+  - platform: mqtt
+    name: "OpenEVSE Temp 1"
+    state_topic: "openevse/temp1"
+    unit_of_measurement: '°C'
+    device_class: temperature
+    value_template: >-
+      {{- (value|float / 10) | round(2) -}}
+
+  - platform: mqtt
+    name: "OpenEVSE Charging Current"
+    icon: mdi:current-ac
+    state_topic: "openevse/amp"
+    unit_of_measurement: "A"
+    value_template: >-
+      {{- (value|float / 1000.0) | round(1) -}}
+
+  - platform: mqtt
+    name: "OpenEVSE Pilot Current"
+    icon: mdi:current-ac
+    state_topic: "openevse/pilot"
+    unit_of_measurement: "A"
+    value_template: >-
+      {{- value|int -}}
+
+  - platform: mqtt
+    name: "OpenEVSE Total Energy"
+    icon: mdi:gauge-full
+    state_topic: "openevse/wh"
+    unit_of_measurement: "kWh"
+    value_template: >-
+      {{- value|float / 1000 | round(2) -}}
+
+  - platform: mqtt
+    name: "OpenEVSE MQTT State"
+    state_topic: "openevse/state"
+
+#  Rest Commands  ##############################################################
+rest_command:
+  openevse_enable:
+    url: 'http://10.0.1.6/r?json=1&rapi=$FE'
+    headers:
+        User-Agent: Home Assistant
+  openevse_disable:
+    url: 'http://10.0.1.6/r?json=1&rapi=$FD'
+    headers:
+        User-Agent: Home Assistant
+  openevse_sleep:
+    url: 'http://10.0.1.6/r?json=1&rapi=$FS'
+    headers:
+        User-Agent: Home Assistant
+
+#  Switches  ###################################################################
+switch:
+  - platform: template
+    switches:
+
+      openevse_enable:
+        friendly_name: "OpenEVSE Enable"
+        value_template: >-
+          {{- states('sensor.openevse_mqtt_state') | regex_match ("^[0123]$") -}}
+        icon_template: >-
+          {%- if states('sensor.openevse_mqtt_state') | regex_match ("^[0123]$") -%}
+            mdi:power-plug
+          {%- else -%}
+            mdi:power-plug-off
+          {%- endif -%}
+        turn_off:
+          - service: rest_command.openevse_sleep
+        turn_on:
+          - service: rest_command.openevse_enable
+
+################################################################################
+#  ToDo List:
+#    - Add more RAPI controls

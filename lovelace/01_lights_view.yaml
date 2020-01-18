@@ -1,0 +1,8 @@
+title: Lights
+icon: mdi:lightbulb-on
+cards:
+  - type: entities
+    title: Test
+    show_header_toggle: true
+    entities:
+      - light.group_livingroom_light

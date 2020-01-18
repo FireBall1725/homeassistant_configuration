@@ -1,61 +1,55 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01/07/2019
+#  @date         :  01-Jul-2019
 #  @package      :  Groups
 #  @description  :  Generic groups for home assistant
 ################################################################################
 
-# Copyright 2019 Erin Reed / FireBall1725
+# Copyright 2020 Erin Reed / FireBall1725
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy 
-# of this software and associated documentation files (the "Software"), to deal 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is 
+# copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
 #  Groups  #####################################################################
 group:
+  all_people:
+    name: all people
+    entities:
+      - device_tracker.phone_erin
+      - device_tracker.phone_james
+
   all_doors:
     name: all doors
     entities:
-      - binary_sensor.front_door
-      - binary_sensor.garage_door
-      - binary_sensor.garage_side_door
-      - binary_sensor.living_room_door
-      - binary_sensor.side_door
-  
+      - binary_sensor.abode_entry_door_front
+      - binary_sensor.abode_entry_door_garage
+      - binary_sensor.abode_entry_door_side
+      - binary_sensor.abode_garage_door_side
+      - binary_sensor.abode_livingroom_door
+
   all_windows:
     name: all windows
     entities:
-      - binary_sensor.living_room_left
-      - binary_sensor.living_room_right
-      - binary_sensor.james_room_left
-      - binary_sensor.james_room_right
 
-  fan_doors:
-    name: fan doors
+  lights_dusk:
+    name: Lights that turn on at dusk
+    all: true
     entities:
-      - binary_sensor.living_room_door
-      - binary_sensor.side_door
-
-  fan_windows:
-    name: fan windows
-    entities:
-      - binary_sensor.living_room_left
-      - binary_sensor.living_room_right
-      - binary_sensor.james_room_left
-      - binary_sensor.james_room_right
+      - light.group_livingroom_light
 
 ################################################################################

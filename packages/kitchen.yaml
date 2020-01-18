@@ -1,0 +1,197 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  06-Jul-2019
+#  @package      :  Kitchen
+#  @description  :  Settings and automations for the kitchen
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Date / Time Input  ##########################################################
+input_datetime:
+  delay_kitchen_light:
+    name: Kitchen Light Delay
+    has_time: true
+
+#  Input Select  ###############################################################
+input_select:
+  kitchen_light_status:
+    name: Kitchen Light Status
+    options:
+      - 'On'
+      - 'Auto'
+      - 'Cooking'
+      - 'Dining'
+      - 'Away'
+      - 'Off'
+    initial: 'Off'
+
+#  Switches  ###################################################################
+switch:
+  - platform: flux
+    lights:
+      - light.group_kitchen_light
+    name: Flux Kitchen Light
+    mode: mired
+    transition: 5
+    interval: 300
+    start_colortemp: 3500
+    sunset_colortemp: 3000
+    stop_colortemp: 2250
+    brightness: 205
+
+#  Lights  #####################################################################
+light:
+  - platform: group
+    name: Group Kitchen Light
+    entities:
+      - light.hue_kitchen_light1
+      - light.hue_kitchen_light2
+      - light.hue_kitchen_light3
+      - light.hue_kitchen_light4
+      - light.hue_kitchen_light5
+
+#  Automations  ################################################################
+automation:
+  # Kitchen Light Switch
+  - alias: switch_kitchen_on
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_kitchen_lightswitch
+      to: '1'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+
+  - alias: switch_kitchen_off
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_kitchen_lightswitch
+      to: '4'
+    action:
+      - service: light.turn_off
+        entity_id: light.group_kitchen_light
+
+  - alias: switch_kitchen_centre
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_kitchen_lightswitch
+      to: '2'
+    action:
+      - service: switch.toggle
+        entity_id: switch.flux_kitchen_light
+
+  - alias: switch_kitchen_brightness_down_fast
+    trigger:
+      - platform: time_pattern
+        seconds: '*'
+    condition:
+      - condition: state
+        entity_id: sensor.lutron_kitchen_lightswitch
+        state: '16'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+        data_template:
+          brightness: "{{ [0, state_attr('light.group_kitchen_light', 'brightness')|int(0) - 36]|max }}"
+          transition: '2'
+
+  - alias: switch_kitchen_brightness_up_fast
+    trigger:
+      - platform: time_pattern
+        seconds: '*'
+    condition:
+      - condition: state
+        entity_id: sensor.lutron_kitchen_lightswitch
+        state: '8'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+        data_template:
+          brightness: "{{ [255, state_attr('light.group_kitchen_light', 'brightness')|int(0) + 36]|min }}"
+          transition: '2'
+
+  - alias: switch_kitchen_brightness_down_slow
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_kitchen_lightswitch
+      to: '16'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+        data_template:
+          brightness: "{{ [0, state_attr('light.group_kitchen_light', 'brightness')|int(0) - 16]|max }}"
+
+  - alias: switch_kitchen_brightness_up_slow
+    trigger:
+      platform: state
+      entity_id: sensor.lutron_kitchen_lightswitch
+      to: '8'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+        data_template:
+          brightness: "{{ [255, state_attr('light.group_kitchen_light', 'brightness')|int(0) + 16]|min }}"
+
+  - alias: motion_kitchen_on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.vera_kitchen_motion
+        to: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_kitchen_light
+      - service: timer.start
+        entity_id: timer.kitchen_light
+        data_template:
+          duration: "{{ states('input_datetime.delay_kitchen_light') }}"
+
+  - alias: timer_kitchen_light_off
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.kitchen_light
+    action:
+      - service: light.turn_off
+        entity_id: light.group_kitchen_light
+
+  # Flux Update
+  - alias: flux_kitchen_update
+    trigger:
+      - platform: state
+        entity_id: light.group_kitchen_light
+        from: 'off'
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: switch.flux_kitchen_light
+        state: 'on'
+    action:
+      service: switch.flux_kitchen_light_update
+
+#  Timer  ######################################################################
+timer:
+  kitchen_light:
+    name: timer_kitchen_light
+    duration: '00:00:10'
+
+################################################################################

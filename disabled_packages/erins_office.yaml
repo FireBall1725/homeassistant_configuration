@@ -1,8 +1,8 @@
 ################################################################################
 #  @author       :  Erin Reed (FireBall1725)
-#  @date         :  01-Jul-2019
-#  @package      :  James' Room
-#  @description  :  Automations and settings for James' Room
+#  @date         :  10-Aug-2019
+#  @package      :  Erin's Office
+#  @description  :  Automations and settings for Erin's Office
 ################################################################################
 
 # Copyright 2020 Erin Reed / FireBall1725
@@ -28,35 +28,10 @@
 #  Lights  #####################################################################
 light:
   - platform: group
-    name: Group Room4 Light
+    name: Group Room2 Light
     entities:
-      - light.hue_room4_light1
-
-#  Sensors  ####################################################################
-sensor:
-  - platform: mqtt
-    state_topic: "shellies/shellyht-58EBC6/sensor/temperature"
-    name: MQTT Room4 Sensor Temperature
-    unit_of_measurement: '°C'
-    device_class: temperature
-
-  - platform: mqtt
-    state_topic: "shellies/shellyht-58EBC6/sensor/humidity"
-    name: MQTT Room4 Sensor Humidity
-    unit_of_measurement: '%'
-    device_class: humidity
-
-  - platform: mqtt
-    state_topic: "shellies/shellyht-58EBC6/sensor/battery"
-    name: MQTT Room4 Sensor Battery
-    unit_of_measurement: '%'
-    device_class: battery
-
-#  Binary Sensors  #############################################################
-binary_sensor:
-  - platform: mqtt
-    state_topic: "shellies/shellyht-58EBC6/online"
-    name: MQTT Room4 Sensor Online
-    device_class: connectivity
+      - light.hue_room2_light1
 
 ################################################################################
+#  ToDo List:
+#    - Automation for turning on / off mixer and speakers

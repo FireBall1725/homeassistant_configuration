@@ -1,0 +1,92 @@
+################################################################################
+#  @author       :  Erin Reed (FireBall1725)
+#  @date         :  30-Dec-2019
+#  @package      :  Entrance
+#  @description  :  Settings and automations for the entrance
+################################################################################
+
+# Copyright 2020 Erin Reed / FireBall1725
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#  Date / Time Input  ##########################################################
+input_datetime:
+  delay_entrance_light:
+    name: Entrance Light Delay
+    has_time: true
+
+#  Switches  ###################################################################
+switch:
+  - platform: flux
+    lights:
+      - light.group_entrance_light
+    name: Flux Entrance Light
+    mode: mired
+    transition: 5
+    interval: 300
+    start_colortemp: 3500
+    sunset_colortemp: 3000
+    stop_colortemp: 2250
+    brightness: 205
+
+#  Lights  #####################################################################
+light:
+  - platform: group
+    name: Group Entrance Light
+    entities:
+      - light.hue_entrance_light1
+      - light.hue_entrance_light2
+      - light.hue_entrance_light3
+      - light.hue_entrance_light4
+
+#  Automations  ################################################################
+automation:
+  - alias: motion_entrance_on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.abode_entrance_motion1
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.vera_entrance_motion2
+        to: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.group_entrance_light
+      - service: timer.start
+        entity_id: timer.entrance_light
+        data_template:
+          duration: "{{ states('input_datetime.delay_entrance_light') }}"
+
+  - alias: timer_entrance_light_off
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.entrance_light
+    action:
+      - service: light.turn_off
+        entity_id: light.group_entrance_light
+
+#  Timer  ######################################################################
+timer:
+  entrance_light:
+    name: timer_entrance_light
+    duration: '00:00:10'
+
+################################################################################

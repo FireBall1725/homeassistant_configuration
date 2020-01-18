@@ -1,0 +1,43 @@
+title: Batteries
+icon:
+cards:
+  - type: entities
+    entities:
+      - type: custom:battery-entity
+        entity: sensor.backyard_battery
+        name: Backyard Raincloud Battery
+
+    title: Irrigation
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - type: custom:battery-entity
+        entity: sensor.esp32_snake1_left_battery_level
+        name: Sally Left Battery
+
+        - type: custom:battery-entity
+        entity: sensor.esp32_snake1_right_battery_level
+        name: Sally Right Battery
+
+      - type: custom:battery-entity
+        entity: sensor.esp32_snake2_left_battery_level
+        name: Salazar Left Battery
+
+      - type: custom:battery-entity
+        entity: sensor.esp32_snake2_right_battery_level
+        name: Salazar Right Battery
+
+    title: Snake Sensor Batteries
+    show_header_toggle: false
+
+  - type: entities
+    entities:
+      - entity: binary_sensor.abode_entry_door_front_battery
+      - entity: binary_sensor.abode_entry_door_garage_battery
+      - entity: binary_sensor.abode_entry_keypad_battery_2
+      - entity: binary_sensor.abode_livingroom_door_battery
+      - entity: binary_sensor.abode_room1_door_battery
+      - entity: binary_sensor.abode_room4_door_battery
+    title: Alarm System Batteries
+    show_header_toggle: false

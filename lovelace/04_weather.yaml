@@ -1,0 +1,15 @@
+title: Weather
+icon:
+cards:
+  - type: custom:weather-card
+    entity: weather.waterloo
+    name: Waterloo
+
+  - type: history-graph
+    entities:
+      - entity: sensor.temperature_sensor_64
+        name: Inside
+      - entity: sensor.waterloo_apparent_temperature
+        name: Outside (Feels Like)
+      - entity: sensor.waterloo_temperature
+        name: Outside (Actual)

@@ -1,0 +1,20 @@
+title: FireKatt 2
+resources:
+  - url: /local/button-card.js
+    type: module
+
+  - url: /local/js/mini-graph-card-bundle.js?v=0.4.3
+    type: module
+
+  - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
+    type: module
+
+  - url: /local/js/battery-entity.js?v=0.1
+    type: module
+
+views:
+  - !include lovelace/02_snake1.yaml
+  - !include lovelace/02_snake2.yaml
+  - !include lovelace/03_security.yaml
+  - !include lovelace/04_weather.yaml
+  - !include lovelace/05_batteries.yaml
