@@ -6,6 +6,6 @@ before_install:
   - touch home-assistant_v2.db
   - touch home-assistant.log
 install:
-  - pip3 install homeassistant==${HA_VERSION}
+  - pip3 install homeassistant
 script:
   - hass --script check_config -c . -f
